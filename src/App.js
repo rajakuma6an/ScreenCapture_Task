@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import React, { useState, useEffect } from "react";
+
+import "./App.css";
 
 function App() {
+  const [enterValues, setEnterValues] = useState([]);
+
+  const onKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      showKeys(enterValues.join(""));
+      setEnterValues([]);
+    } else {
+      setEnterValues((values) => [...values, e.key]);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyPress);
+    return () => {
+      document.removeEventListener("keydown", onKeyPress);
+    };
+  }, [enterValues]);
+
+  const showKeys = (keys) => {
+    alert(`EnterValues: ${keys}`);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>lets press the keys and hit enter</p>
     </div>
   );
 }
